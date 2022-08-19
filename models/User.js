@@ -12,11 +12,21 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      // Look into email matching validation.
+      // !! Look into email matching validation. !!
     },
-    thoughts: [thoughtSchema],
-    friends: [userSchema],
-    // friends is a self-reference.
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'thought',
+      },
+    ],
+    friends: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'user'
+        // friends is a self-reference.
+      }
+    ],
   },
   {
     toJSON: {
@@ -26,6 +36,11 @@ const userSchema = new Schema(
 );
 
 // Virtual called friendCount
+userSchema
+  .virtual('friendCount')
+  .get(function () {
+    return this.friends.length;
+  });
 
 const User = model('user', userSchema)
 

@@ -1,4 +1,5 @@
 const { Schema, model, Types } = require('mongoose');
+const reactionSchema = require('./Reaction');
 
 const thoughtSchema = new Schema(
   {
@@ -17,7 +18,6 @@ const thoughtSchema = new Schema(
       default: Date.now,
     },
     reactions: [reactionSchema], 
-    // reactionSchema._id ?
   },
   {
     toJSON: {
@@ -29,8 +29,19 @@ const thoughtSchema = new Schema(
 
 // Virtual called reactionCount that retrieves the length of the thought's
 // reactions array field on query.
+thoughtSchema
+  .virtual('reactionCount')
+  .get(function () {
+    return this.reactions.length;
+  });
+
+// Not sure if these two can be in one group.
 
 // Need a getter method to format the timestamp on query
+thoughtSchema
+  .get(function () {
+    return this.createdAt.toLocaleString();
+  });
 
 const Thought = model('thought', thoughtSchema);
 
