@@ -20,12 +20,16 @@ const thoughtSchema = new Schema(
   },
   {
     toJSON: {
+      virtuals: true,
       getters: true,
     },
   }
 );
 
-// Need a getter method to format the timestamp on query.
+// Virtual called reactionCount that retrieves the length of the thought's
+// reactions array field on query.
+
+// Need a getter method to format the timestamp on query
 
 const Thought = model('thought', thoughtSchema);
 

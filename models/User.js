@@ -15,11 +15,17 @@ const userSchema = new Schema(
       // Look into email matching validation.
     },
     thoughts: [thoughtSchema],
+    friends: [userSchema],
+    // friends is a self-reference.
   },
   {
-    // Virtual called friendCount
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
+
+// Virtual called friendCount
 
 const User = model('user', userSchema)
 
