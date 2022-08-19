@@ -12,7 +12,21 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      validator: { $jsonSchema: {
+        bsonType: "object",
+        title: "Email Validation",
+        properties: {
+          email: {
+            "bsonType": "string",
+            "pattern": "", // This will be a regex
+            "description": "Field must be a valid email address!"
+          },
+        },
+      }},
       // !! Look into email matching validation. !!
+      // Not 100% sure this will work.
+      // https://www.mongodb.com/docs/manual/core/schema-validation/#use-title-and-description-fields-to-clarify-validation-rules
+      validationLevel: "moderate"
     },
     thoughts: [
       {
