@@ -13,7 +13,7 @@ const userSchema = new Schema(
       required: true,
       unique: true,
       match: [/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/],
-      // Validate would work to, but would require a function to be passed in.
+      // Validate would work too, but would require a function to be passed in.
     },
     thoughts: [
       {
