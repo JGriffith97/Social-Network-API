@@ -20,7 +20,6 @@ module.exports = {
   },
   // Create a user
   createUser(req, res) {
-    // Need to look into this one a bit, particularly regarding the email
     User.create(req.body)
       .then((user) => res.json(user))
       .catch((err) => {
@@ -46,7 +45,40 @@ module.exports = {
     )
     .then((user) =>
       !user
-        ? res.status(404).json({ message: 'No user under this ID' })
+        ? res.status(404).json({ message: 'No user under that ID' })
+        : res.json(user)
+    )
+    .catch((err) => res.status(500).json(err));
+  },
+  addFriend(req, res) {
+    // Post to :userId/friends or via the id?
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $addToSet: { friends: req.params.friendId } },
+      { runValidators: true, new: true }
+    )
+    .then((user) => 
+      !user
+        ? res
+            .status(404)
+            .json({ message: `No user found under that ID` })
+        : res.json(user)
+    )
+        .catch((err) => res.status(500).json(err))
+
+  },
+  removeFriend(req, res) {
+    // Delete via :userId/friends/:friendId
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friend: { friendId: req.params.friendId } } },
+      { runValidators: true, new: true }
+    )
+    .then((user) =>
+      !user
+        ? res
+          .status(404)
+          .json({ message: 'No user found under that ID' })
         : res.json(user)
     )
     .catch((err) => res.status(500).json(err));
