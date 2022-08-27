@@ -62,7 +62,8 @@ module.exports = {
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $addToSet: { friends: req.body.friendId } },
-      { runValidators: true, new: true }
+      { runValidators: true, new: true } // New returns the document after the update was applied.
+                                         // Default is false.
     )
     .then((user) => 
       !user
@@ -78,7 +79,8 @@ module.exports = {
     // Delete via :userId/friends/:friendId
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friends: { _id: req.params.friendId } } },
+      { $pull: { friends: req.params.friendId } },
+      { new: true }
     )
     .then((user) =>
       !user

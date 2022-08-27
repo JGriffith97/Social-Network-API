@@ -16,6 +16,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
+      get: cleanDate
     },
     reactions: [reactionSchema], 
   },
@@ -39,10 +40,10 @@ thoughtSchema
 // Not sure if these two can be in one group.
 
 // Need a getter method to format the timestamp on query
-thoughtSchema
-  .get(function () {
-    return this.createdAt.toLocaleString();
-  });
+function cleanDate(createdAt) {
+  let newDate = new Date(createdAt)
+  return newDate.toLocaleString();
+};
 
 const Thought = model('Thought', thoughtSchema);
 

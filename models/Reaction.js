@@ -1,5 +1,9 @@
 const { Schema, Types } = require('mongoose');
 
+// const opts = {
+//   createdAt: { currentTime: () => Date.now().toLocaleString() }
+// }
+
 const reactionSchema = new Schema(
   {
     reactionId: {
@@ -18,6 +22,7 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
+      get: cleanDate
     },
   },
   {
@@ -28,20 +33,10 @@ const reactionSchema = new Schema(
   }
 ); 
 
-// Need a getter method to format the timestamp on query.
-reactionSchema
-  .get(function () {
-    return this.createdAt.toLocaleString();
-  })
-
-  // This is a note from a prior SQL project,
-  // just in case the above doesn't work.
-  // module.exports = {
-  //   format_date: (date) => {
-  //     let newDate = new Date(date)
-  //     // Format date as MM/DD/YYYY
-  //     return newDate.toLocaleDateString();
-  //   },
-  // };
+function cleanDate(createdAt) {
+  let newDate = new Date(createdAt)
+  return newDate.toLocaleString();
+};
+  
 
 module.exports = reactionSchema;
