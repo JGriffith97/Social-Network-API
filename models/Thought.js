@@ -15,7 +15,7 @@ const thoughtSchema = new Schema(
     },
     createdAt: {
       type: Date,
-      default: Date.now,
+      default: Date.now(),
     },
     reactions: [reactionSchema], 
   },
@@ -24,6 +24,7 @@ const thoughtSchema = new Schema(
       virtuals: true,
       getters: true,
     },
+    id: false,
   }
 );
 
@@ -43,6 +44,6 @@ thoughtSchema
     return this.createdAt.toLocaleString();
   });
 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
