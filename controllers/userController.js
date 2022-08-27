@@ -13,7 +13,7 @@ module.exports = {
   // Get a user
   getSingleUser(req, res) {
     User.findOne({ _id: req.params.userId })
-      .populate({ path: 'friends', select: '-__v' })
+      // .populate({ path: 'friends', select: '-__v' })
       .select('-__v')
       .then((user) => 
         !user
@@ -61,7 +61,7 @@ module.exports = {
     // Post to :userId/friends or via the id?
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $addToSet: { friends: req.params.friendId } },
+      { $addToSet: { friends: req.body.friendId } },
       { runValidators: true, new: true }
     )
     .then((user) => 
@@ -78,8 +78,7 @@ module.exports = {
     // Delete via :userId/friends/:friendId
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { $pull: { friend: { friendId: req.params.friendId } } },
-      { runValidators: true, new: true }
+      { $pull: { friends: { _id: req.params.friendId } } },
     )
     .then((user) =>
       !user
