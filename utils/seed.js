@@ -21,8 +21,6 @@ connection.once('open', async () => {
       reactions: userReactions,
     })
   }
-  // const users = getUsers(10);
-  // const thoughts = getThoughts(10)
 
   await Thought.collection.insertMany(userThoughts);
 
@@ -33,10 +31,12 @@ connection.once('open', async () => {
         username: usernames[i],
         email: emails[i],
         thoughts: [userThoughts[i]._id],
+        // Applies the userThoughts to the users object by their id.
       });
     }
   }
 
+  // Runs the makeUsers function, then inserts the users array to the User collection.
   makeUsers()
   await User.collection.insertMany(users);
 
@@ -47,18 +47,16 @@ connection.once('open', async () => {
         getRandomArrItem(users)._id,
       );
     }
-    // console.log('FRIENDS', friends)
     return friends;
   };
 
+  // Updates each user with friends pulled from existing users.
   for (i = 0; i < users.length; i++) {
     await User.collection.updateOne(
       { "friends": null },
       [{ $set: { friends: getRandomFriends(2) }}],
     );
   }
-
-  // users.forEach(user => user.friends = getRandomFriends(2))
 
   console.table(users, ['username', 'email', 'thoughts', '_id']);
   console.table(userThoughts, ['thoughtText', 'username', 'reactions', '_id']);

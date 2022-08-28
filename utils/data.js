@@ -40,14 +40,6 @@ const thoughts = [
 const reactions = [
   'This is a first random reaction.',
   'This is a second random reaction.',
-  'This is a third random reaction.',
-  'This is a fourth random reaction.',
-  'This is a fifth random reaction.',
-  'This is a sixth random reaction.',
-  'This is a seventh random reaction.',
-  'This is a eighth random reaction.',
-  'This is a ninth random reaction.',
-  'This is a tenth random reaction.',
 ]
 
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -57,7 +49,7 @@ const getRandomReactions = (int) => {
   const results = [];
   for (let i = 0; i < int; i++) {
     results.push({
-      reactions: getRandomArrItem(reactions),
+      reactionBody: reactions[i],
     });
   }
   return results;
